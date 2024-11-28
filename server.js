@@ -5,7 +5,54 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 5000; // Use PORT from environment or default to 5000
 
+// const apiKey = process.env.PAGE_SPEED_API_KEY || 'AIzaSyDLCLJNTfjl5aLZuH_zGLnZ7eKyHRGRCE8';
+const apiKey= process.env.PAGE_SPEED_API_KEY ||'AIzaSyDLCLJNTfjl5aLZuH_zGLnZ7eKyHRGRCE8';
+
+const apiUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
+https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=ENCODED_URL&key=API_KEY&strategy=mobile
 app.use(cors()); // Allow all origins
+
+app.use(express.json());
+
+app.get('/pagespeed', async (req, res) => {
+  const { url } = req.query;
+
+  if (!url) {
+    return res.status(400).json({ error: 'URL is required' });
+  }
+
+  try {
+    // Properly encode the URL
+    const encodedUrl = encodeURIComponent(url);
+
+    // Fetch mobile data
+    const mobileResponse = await fetch(`${apiUrl}?url=${encodedUrl}&key=${apiKey}&strategy=mobile`);
+    const mobileData = await mobileResponse.json();
+
+    if (!mobileResponse.ok) {
+      return res.status(500).json({ error: mobileData.error.message || 'Error fetching mobile data from PageSpeed Insights' });
+    }
+
+    // Fetch desktop data
+    const desktopResponse = await fetch(`https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodedUrl}&key=${apiKey}&strategy=desktop`);
+    const desktopData = await desktopResponse.json();
+
+    if (!desktopResponse.ok) {
+      return res.status(500).json({ error: desktopData.error.message || 'Error fetching desktop data from PageSpeed Insights' });
+    }
+
+    // Send both mobile and desktop data in the response
+    res.json({
+      mobile: mobileData,
+      desktop: desktopData,
+    });
+
+  } catch (error) {
+    console.error("Error fetching PageSpeed Insights:", error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 app.get('/proxy-fetch', async (req, res) => {
