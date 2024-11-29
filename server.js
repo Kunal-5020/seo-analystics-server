@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 5000; // Use PORT from environment or default t
 const apiKey= process.env.PAGE_SPEED_API_KEY ||'AIzaSyDLCLJNTfjl5aLZuH_zGLnZ7eKyHRGRCE8';
 
 const apiUrl = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=ENCODED_URL&key=API_KEY&strategy=mobile
 app.use(cors()); // Allow all origins
 
 app.use(express.json());
