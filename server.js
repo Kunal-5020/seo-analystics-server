@@ -106,7 +106,7 @@ app.post('/send-email', (req, res) => {
   const mailOptions = {
     from: 'kunaldgtlmart@gmail.com',
     to: 'contact@dgtlmart.com',
-    subject: 'Form Submission',
+    subject: 'SEO Audit Contact - DGTLmart',
     html: `
 
     <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333; line-height: 1.6; background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
