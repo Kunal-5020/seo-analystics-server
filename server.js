@@ -105,7 +105,7 @@ app.post('/send-email', (req, res) => {
 
   const mailOptions = {
     from: 'kunaldgtlmart@gmail.com',
-    to: 'kunalbhadana15@gmail.com',
+    to: 'contact@dgtlmart.com',
     subject: 'Form Submission',
     html: `
 
